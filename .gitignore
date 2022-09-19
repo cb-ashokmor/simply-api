@@ -1,0 +1,5 @@
+/Service/target/
+/Common/target/
+/.idea/
+/IntegrationTest/target/
+/IntegrationTest/cucumber_report.html

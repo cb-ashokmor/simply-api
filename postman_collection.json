@@ -1,0 +1,459 @@
+{
+	"info": {
+		"_postman_id": "f0cceac8-792a-42ad-9099-fd47e238b3ce",
+		"name": "Local",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20298222"
+	},
+	"item": [
+		{
+			"name": "Webhook - Push",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"data\": {\n    \"id\": \"1\",\n    \"status\": \"CMP\",\n    \"internal-data\": {\n      \"content\": {\n        \"id\": \"1\",\n        \"status\": \"cmp\"\n      }\n    }\n  }\n}"
+				},
+				"url": {
+					"raw": "{{api-host}}/api/webhooks",
+					"host": [
+						"{{api-host}}"
+					],
+					"path": [
+						"api",
+						"webhooks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Webhook - Get",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{api-host}}/api/webhooks/1",
+					"host": [
+						"{{api-host}}"
+					],
+					"path": [
+						"api",
+						"webhooks",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Webhook - Duration",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api-host}}/api/webhooks/duration",
+					"host": [
+						"{{api-host}}"
+					],
+					"path": [
+						"api",
+						"webhooks",
+						"duration"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Webhook - Set Config",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"controllerDelay\" : 1,\n    \"processorDelay\" : 1,\n    \"controllerFail\" : false,\n    \"processorFail\" : false\n}"
+				},
+				"url": {
+					"raw": "{{api-host}}/api/webhooks/config",
+					"host": [
+						"{{api-host}}"
+					],
+					"path": [
+						"api",
+						"webhooks",
+						"config"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Webhook - Get Config",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api-host}}/api/webhooks/config",
+					"host": [
+						"{{api-host}}"
+					],
+					"path": [
+						"api",
+						"webhooks",
+						"config"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Webhook - Reset Counter",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{api-host}}/api/webhooks/reset",
+					"host": [
+						"{{api-host}}"
+					],
+					"path": [
+						"api",
+						"webhooks",
+						"reset"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Secured Webhook - Push",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"data\": {\n    \"id\": \"2\",\n    \"status\": \"FLD\",\n    \"internal-data\": {\n      \"content\": {\n        \"id\": \"2\",\n        \"status\": \"FLD\"\n      }\n    }\n  }\n}"
+				},
+				"url": {
+					"raw": "{{api-host}}/api/secured/webhooks",
+					"host": [
+						"{{api-host}}"
+					],
+					"path": [
+						"api",
+						"secured",
+						"webhooks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Secured Webhook - Get",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api-host}}/api/secured/webhooks/1",
+					"host": [
+						"{{api-host}}"
+					],
+					"path": [
+						"api",
+						"secured",
+						"webhooks",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Secured Webhook - Duration",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api-host}}/api/secured/webhooks/duration",
+					"host": [
+						"{{api-host}}"
+					],
+					"path": [
+						"api",
+						"secured",
+						"webhooks",
+						"duration"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Secured Webhook - Set Config",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"controllerDelay\": 2,\n    \"processorDelay\": 2,\n    \"controllerFail\": false,\n    \"processorFail\": false\n}"
+				},
+				"url": {
+					"raw": "{{api-host}}/api/secured/webhooks/config",
+					"host": [
+						"{{api-host}}"
+					],
+					"path": [
+						"api",
+						"secured",
+						"webhooks",
+						"config"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Secured Webhook - Get Config",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api-host}}/api/secured/webhooks/config",
+					"host": [
+						"{{api-host}}"
+					],
+					"path": [
+						"api",
+						"secured",
+						"webhooks",
+						"config"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Secured Webhook - Reset Counter",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{api-host}}/api/secured/webhooks/reset",
+					"host": [
+						"{{api-host}}"
+					],
+					"path": [
+						"api",
+						"secured",
+						"webhooks",
+						"reset"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Local webhook - Reset - username password in url",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://user:password@localhost:9001/api/webhooks/reset",
+					"protocol": "http",
+					"auth": {
+						"user": "user",
+						"password": "password"
+					},
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"api",
+						"webhooks",
+						"reset"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Local webhook - Get - Username and password in URL",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://user:password@localhost:9090/api/secured/webhooks/2",
+					"protocol": "http",
+					"auth": {
+						"user": "user",
+						"password": "password"
+					},
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"api",
+						"secured",
+						"webhooks",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
