@@ -2,12 +2,11 @@ package org.simply.api.service.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
-import org.simply.api.common.model.*;
-import org.simply.api.service.service.WebhookService;
 import org.simply.api.common.model.Config;
 import org.simply.api.common.model.Counter;
 import org.simply.api.common.model.Reset;
 import org.simply.api.common.model.WebhookResponse;
+import org.simply.api.service.service.WebhookService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

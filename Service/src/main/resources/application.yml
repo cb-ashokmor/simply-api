@@ -2,3 +2,8 @@ server:
   port: 9001
   servlet:
     context-path: /api
+
+app:
+  webhook:
+    core-pool-size: 5
+    max-pool-size: 10

@@ -2,11 +2,10 @@ package org.simply.api.service.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
+import org.simply.api.common.model.Error;
 import org.simply.api.common.model.*;
 import org.simply.api.service.exception.NoObjectFoundException;
-import org.simply.api.common.model.*;
 import org.simply.api.service.service.WebhookService;
-import org.simply.api.common.model.Error;
 
 import java.util.Optional;
 
@@ -26,19 +25,27 @@ public abstract class BaseWebhookController {
         try {
             counter.start();
 
-            log.info("Counter: {}, Delay: {}, Fail: {}", counter.incrementAndGet(), webhookService.getConfig().getControllerDelay(), webhookService.getConfig().getControllerFail());
+            Payload payload = Payload.builder().content(content).build();
 
-            webhookService.process(Payload.builder().content(content).build());
+            log.info("Start controller - counter: {}, delay: {}, doFail: {}, id: {}",
+                    counter.incrementAndGet(), webhookService.getConfig().getControllerDelay(), webhookService.getConfig().getControllerFail(), payload.getId());
+
+            webhookService.process(payload);
 
             if (webhookService.getConfig().getControllerDelay() != null) {
                 Thread.sleep(webhookService.getConfig().getControllerDelay());
             }
 
             if (Optional.ofNullable(webhookService.getConfig().getControllerFail()).orElse(false)) {
-                throw new RuntimeException("intentional failure");
+                throw new RuntimeException("Intentional failure at controller level");
             }
 
-            return WebhookResponse.builder().message("Acknowledge").build();
+            WebhookResponse response = WebhookResponse.builder().message("Acknowledged").build();
+
+            log.info("End controller - counter: {}, delay: {}, doFail: {}, id: {}",
+                    counter.getCounter(), webhookService.getConfig().getControllerDelay(), webhookService.getConfig().getControllerFail(), payload.getId());
+
+            return response;
         } finally {
             counter.end();
         }
@@ -67,8 +74,8 @@ public abstract class BaseWebhookController {
 
     public WebhookResponse getDuration() {
         return WebhookResponse.builder()
-                .controllerTime(counter.duration())
-                .processorTime(webhookService.getDuration())
+                .controllerTime((float)counter.duration() / 1000)
+                .processorTime((float)webhookService.getDuration() / 1000)
                 .count(webhookService.getCache().size()).build();
     }
 

@@ -33,12 +33,12 @@ public class WebhookService {
         this.counter = counter;
     }
 
-    @Async
+    @Async("webhookAsyncExecutor")
     public void process(Payload payload) throws InterruptedException {
         try {
             counter.start();
 
-            log.info("Processed, counter: {}, delay: {}, fail: {}, {}", counter.incrementAndGet(), config.getProcessorDelay(), config.getProcessorFail(), payload);
+            log.info("Start processing - counter: {}, delay: {}, doFail: {}, id: {}", counter.incrementAndGet(), config.getProcessorDelay(), config.getProcessorFail(), payload.getId());
 
             if (config.getProcessorDelay() != null) {
                 Thread.sleep(config.getProcessorDelay());
@@ -47,8 +47,10 @@ public class WebhookService {
             cache.put(payload.getId(), payload);
 
             if (Optional.ofNullable(config.getProcessorFail()).orElse(false)) {
-                throw new RuntimeException("intentional failure");
+                throw new RuntimeException("Intentional failure at processor level");
             }
+
+            log.info("End processing - counter: {}, delay: {}, doFail: {}, id: {}", counter.getCounter(), config.getProcessorDelay(), config.getProcessorFail(), payload.getId());
         } finally {
             counter.end();
         }

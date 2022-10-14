@@ -15,7 +15,7 @@ public class WebhookResponse {
 
     private Integer count;
 
-    private Long controllerTime;
+    private Float controllerTime;
 
-    private Long processorTime;
+    private Float processorTime;
 }

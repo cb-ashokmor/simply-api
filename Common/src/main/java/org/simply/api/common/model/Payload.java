@@ -16,15 +16,18 @@ public class Payload {
     private JsonNode content;
 
     @JsonIgnore
+    private String id;
+
+    @JsonIgnore
     public String getId() {
 
-        if (content != null) {
+        if (id == null && content != null) {
             JsonNode value = content.findValue("id");
             if (value != null) {
-                return value.asText();
+                id = value.asText();
             }
         }
-        return null;
+        return id;
     }
 
     @Override
