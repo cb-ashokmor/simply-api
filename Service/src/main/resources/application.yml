@@ -5,5 +5,11 @@ server:
 
 app:
   webhook:
-    core-pool-size: 5
-    max-pool-size: 10
+    executor:
+      core-pool-size: 10
+      max-pool-size: 20
+  job:
+    webhook-host: http://localhost:9001
+    executor:
+      core-pool-size: 10
+      max-pool-size: 20

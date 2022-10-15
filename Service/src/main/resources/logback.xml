@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <include resource="org/springframework/boot/logging/logback/base.xml" />
-    <logger name="org.springframework" level="WARN"/>
-    <logger name="com.simply.api" level="INFO"/>
+
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS}  %-5level -- [%-25thread] %-40logger{36} : %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.springframework" level="warn"/>
+    <logger name="com.simply.api" level="info"/>
+
+    <root level="info">
+        <appender-ref ref="stdout" />
+    </root>
 </configuration>

@@ -1,35 +1,27 @@
-package org.simply.api.integrationtest.service;
+package org.simply.api.client;
 
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import javax.annotation.PostConstruct;
 import java.util.Base64;
 
-@Component
+import static java.util.Objects.nonNull;
+
 @Getter
-public class HttpClientService {
-
+public class HttpService {
     private final RestTemplate restTemplate = new RestTemplate();
-
-    @Value("${test.url}")
-    private String url;
-
-    @Value("${test.username}")
-    private String username;
-
-    @Value("${test.password}")
-    private String password;
-
+    private final String host;
     private String auth;
 
-    @PostConstruct
-    public void setAuth() {
+    public HttpService(String host, String username, String password) {
         String plainCredential = username + ":" + password;
-        auth = Base64.getEncoder().encodeToString(plainCredential.getBytes());
+        this.auth = Base64.getEncoder().encodeToString(plainCredential.getBytes());
+        this.host = host;
+    }
+
+    public HttpService(String host) {
+        this.host = host;
     }
 
     public <T> ResponseEntity<T> get(String endpoint, Class<T> clazz) {
@@ -42,7 +34,11 @@ public class HttpClientService {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
 
-        HttpEntity<T> request = new HttpEntity<>(payload, headers);
+        HttpEntity<T> request = null;
+
+        if (nonNull(payload)) {
+            request = new HttpEntity<>(payload, headers);
+        }
 
         R r = restTemplate.postForObject(url(endpoint), request, clazz);
 
@@ -78,14 +74,14 @@ public class HttpClientService {
 
     private String url(String endpoint) {
 
-        if (!url.endsWith("/") && !endpoint.startsWith("/")) {
-            return url + "/" + endpoint;
+        if (!host.endsWith("/") && !endpoint.startsWith("/")) {
+            return host + "/" + endpoint;
         }
 
-        if (url.endsWith("/") && endpoint.startsWith("/")) {
-            return url + endpoint.substring(1);
+        if (host.endsWith("/") && endpoint.startsWith("/")) {
+            return host + endpoint.substring(1);
         }
 
-        return url + endpoint;
+        return host + endpoint;
     }
 }

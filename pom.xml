@@ -22,6 +22,7 @@
 
 	<modules>
 		<module>Common</module>
+		<module>Client</module>
 		<module>Service</module>
 		<module>IntegrationTest</module>
 	</modules>

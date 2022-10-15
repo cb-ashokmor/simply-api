@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.simply.api.common.model.Config;
 import org.simply.api.common.model.Counter;
-import org.simply.api.common.model.Payload;
+import org.simply.api.common.model.webhook.WebhookPayload;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Async;
@@ -25,7 +25,7 @@ public class WebhookService {
     private final Counter counter;
 
     @Getter
-    private Map<String, Payload> cache = new ConcurrentHashMap<>();
+    private Map<String, WebhookPayload> cache = new ConcurrentHashMap<>();
 
 
     public WebhookService(Config config, Counter counter) {
@@ -34,23 +34,23 @@ public class WebhookService {
     }
 
     @Async("webhookAsyncExecutor")
-    public void process(Payload payload) throws InterruptedException {
+    public void process(WebhookPayload webhookPayload) throws InterruptedException {
         try {
             counter.start();
 
-            log.info("Start processing - counter: {}, delay: {}, doFail: {}, id: {}", counter.incrementAndGet(), config.getProcessorDelay(), config.getProcessorFail(), payload.getId());
+            log.info("## Start processing - counter: {}, delay: {}, doFail: {}, id: {}", counter.incrementAndGet(), config.getProcessorDelay(), config.getProcessorFail(), webhookPayload.getId());
 
             if (config.getProcessorDelay() != null) {
                 Thread.sleep(config.getProcessorDelay());
             }
 
-            cache.put(payload.getId(), payload);
+            cache.put(webhookPayload.getId(), webhookPayload);
 
             if (Optional.ofNullable(config.getProcessorFail()).orElse(false)) {
                 throw new RuntimeException("Intentional failure at processor level");
             }
 
-            log.info("End processing - counter: {}, delay: {}, doFail: {}, id: {}", counter.getCounter(), config.getProcessorDelay(), config.getProcessorFail(), payload.getId());
+            log.info("## End processing - counter: {}, delay: {}, doFail: {}, id: {}", counter.getCounter(), config.getProcessorDelay(), config.getProcessorFail(), webhookPayload.getId());
         } finally {
             counter.end();
         }
@@ -58,7 +58,7 @@ public class WebhookService {
 
     }
 
-    public Payload get(String key) {
+    public WebhookPayload get(String key) {
         return cache.get(key);
     }
 

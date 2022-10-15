@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.simply.api.common.model.Config;
 import org.simply.api.common.model.Counter;
 import org.simply.api.common.model.Reset;
-import org.simply.api.common.model.WebhookResponse;
+import org.simply.api.common.model.webhook.WebhookResponse;
 import org.simply.api.service.service.WebhookService;
 import org.springframework.web.bind.annotation.*;
 

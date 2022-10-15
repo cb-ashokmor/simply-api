@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
 import org.simply.api.common.model.Error;
 import org.simply.api.common.model.*;
+import org.simply.api.common.model.webhook.WebhookPayload;
+import org.simply.api.common.model.webhook.WebhookResponse;
 import org.simply.api.service.exception.NoObjectFoundException;
 import org.simply.api.service.service.WebhookService;
 
@@ -25,12 +27,12 @@ public abstract class BaseWebhookController {
         try {
             counter.start();
 
-            Payload payload = Payload.builder().content(content).build();
+            WebhookPayload webhookPayload = WebhookPayload.builder().content(content).build();
 
-            log.info("Start controller - counter: {}, delay: {}, doFail: {}, id: {}",
-                    counter.incrementAndGet(), webhookService.getConfig().getControllerDelay(), webhookService.getConfig().getControllerFail(), payload.getId());
+            log.info("# Start controller - counter: {}, delay: {}, doFail: {}, id: {}",
+                    counter.incrementAndGet(), webhookService.getConfig().getControllerDelay(), webhookService.getConfig().getControllerFail(), webhookPayload.getId());
 
-            webhookService.process(payload);
+            webhookService.process(webhookPayload);
 
             if (webhookService.getConfig().getControllerDelay() != null) {
                 Thread.sleep(webhookService.getConfig().getControllerDelay());
@@ -42,8 +44,8 @@ public abstract class BaseWebhookController {
 
             WebhookResponse response = WebhookResponse.builder().message("Acknowledged").build();
 
-            log.info("End controller - counter: {}, delay: {}, doFail: {}, id: {}",
-                    counter.getCounter(), webhookService.getConfig().getControllerDelay(), webhookService.getConfig().getControllerFail(), payload.getId());
+            log.info("# End controller - counter: {}, delay: {}, doFail: {}, id: {}",
+                    counter.getCounter(), webhookService.getConfig().getControllerDelay(), webhookService.getConfig().getControllerFail(), webhookPayload.getId());
 
             return response;
         } finally {
@@ -52,24 +54,20 @@ public abstract class BaseWebhookController {
     }
 
     public JsonNode get(String key) {
-        Payload payload = webhookService.get(key);
+        WebhookPayload webhookPayload = webhookService.get(key);
 
-        if (java.util.Objects.isNull(payload)) {
+        if (java.util.Objects.isNull(webhookPayload)) {
             Error error = Error.builder().error("Not found webhook payload for " + key + " key").build();
             throw NoObjectFoundException.builder().error(error).build();
         }
 
-        return payload.getContent();
+        return webhookPayload.getContent();
     }
 
     public Reset reset() {
         counter.reset();
-
         webhookService.reset();
-
-        log.info("reset");
-
-        return Reset.builder().message("All data reset").build();
+        return Reset.builder().message("Request data reset").build();
     }
 
     public WebhookResponse getDuration() {

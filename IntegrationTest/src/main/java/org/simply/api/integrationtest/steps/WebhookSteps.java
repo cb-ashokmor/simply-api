@@ -1,20 +1,29 @@
 package org.simply.api.integrationtest.steps;
 
-import org.simply.api.common.model.Config;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
+import org.simply.api.common.model.Config;
+import org.simply.api.common.model.Reset;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @Slf4j
-public class AllowedWebhookSteps extends BaseSteps {
+public class WebhookSteps extends BaseSteps {
 
-    @When("^the user post configuration as per (.+) payload to webhook$")
-    public void the_user_calls_webhook_config_api(String payloadFilename) throws Exception {
+    @When("^the user reset the webhook stats$")
+    public void call_reset_api() {
+        log.debug("Calling api reset webhook stats");
 
+        String endpoint = "/api/webhooks/reset";
+
+        post(endpoint, null, Reset.class);
+    }
+
+    @When("^the user set the configuration as per (.+) payload to webhook$")
+    public void call_config_api(String payloadFilename) throws Exception {
         String fileContent = getFileContent(payloadFilename);
 
         log.debug("Calling api to update webhook config, payload {}", fileContent);
@@ -29,8 +38,7 @@ public class AllowedWebhookSteps extends BaseSteps {
     }
 
     @Then("^the user verify status code of (\\d+) for webhook$")
-    public void the_user_receives_status_code_of(int statusCode) {
-
+    public void verify_status_code(int statusCode) {
         log.debug("verify status code matches {}", statusCode);
 
         HttpStatus httpStatus = context().get("webhookConfigStatus");
@@ -39,8 +47,7 @@ public class AllowedWebhookSteps extends BaseSteps {
     }
 
     @And("^the user get configuration as per (.+) json for webhook$")
-    public void the_user_get_configuration_for_allowed_webhook(String jsonFilename) throws Exception {
-
+    public void get_configuration(String jsonFilename) throws Exception {
         log.debug("Calling api to get config of webhook.");
 
         String fileContent = getFileContent(jsonFilename);

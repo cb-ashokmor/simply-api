@@ -1,9 +1,10 @@
 package org.simply.api.integrationtest.steps;
 
-import org.simply.api.integrationtest.service.ExecutionContext;
-import org.simply.api.integrationtest.service.HttpClientService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.simply.api.client.HttpService;
+import org.simply.api.integrationtest.config.WebhookConfig;
+import org.simply.api.integrationtest.service.ExecutionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
@@ -11,6 +12,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -23,13 +25,20 @@ public abstract class BaseSteps {
 
     protected final ObjectMapper objectMapper = new ObjectMapper();
 
-    @Autowired
-    private HttpClientService httpClient;
+    private final ResourceLoader resourceLoader = new DefaultResourceLoader();
 
-    private ResourceLoader resourceLoader = new DefaultResourceLoader();
+    @Autowired
+    private WebhookConfig config;
+
+    private HttpService httpService;
 
     protected ExecutionContext context() {
         return ExecutionContext.CONTEXT;
+    }
+
+    @PostConstruct
+    public void init() {
+        httpService = new HttpService(config.getHost(), config.getUsername(), config.getPassword());
     }
 
     protected String getFileContent(String filename) {
@@ -43,18 +52,18 @@ public abstract class BaseSteps {
     }
 
     protected <T> ResponseEntity<T> get(String endpoint, Class<T> clazz) {
-        return httpClient.get(endpoint, clazz);
+        return httpService.get(endpoint, clazz);
     }
 
     protected <T, R> ResponseEntity<R> post(String endpoint, T payload, Class<R> clazz) {
-        return httpClient.post(endpoint, payload, clazz);
+        return httpService.post(endpoint, payload, clazz);
     }
 
     protected <T> ResponseEntity<T> get(String endpoint, Class<T> clazz, boolean needAuth) {
-        return httpClient.get(endpoint, clazz, needAuth);
+        return httpService.get(endpoint, clazz, needAuth);
     }
 
     protected <T, R> ResponseEntity<R> post(String endpoint, T payload, Class<R> clazz, boolean needAuth) {
-        return httpClient.post(endpoint, payload, clazz, needAuth);
+        return httpService.post(endpoint, payload, clazz, needAuth);
     }
 }

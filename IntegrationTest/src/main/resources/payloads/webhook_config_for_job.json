@@ -1,5 +1,5 @@
 {
-  "controllerDelay": 1000,
+  "controllerDelay": 500,
   "processorDelay": 0,
   "controllerFail": false,
   "processorFail": false

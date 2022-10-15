@@ -12,8 +12,6 @@
     <name>Integration test for simply api project</name>
 
     <dependencies>
-        <!-- TEST -->
-
         <dependency>
             <groupId>org.simply.api</groupId>
             <artifactId>Common</artifactId>
@@ -21,21 +19,27 @@
         </dependency>
 
         <dependency>
+            <groupId>org.simply.api</groupId>
+            <artifactId>Client</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
-            <version>7.6.0</version>
+            <version>7.8.1</version>
         </dependency>
 
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit</artifactId>
-            <version>7.6.0</version>
+            <version>7.8.1</version>
         </dependency>
 
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-spring</artifactId>
-            <version>7.6.0</version>
+            <version>7.8.1</version>
         </dependency>
 
         <!-- run cucumber test via mvn -->

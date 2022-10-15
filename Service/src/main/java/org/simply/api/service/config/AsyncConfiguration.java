@@ -16,17 +16,33 @@ import java.util.concurrent.Executor;
 public class AsyncConfiguration {
 
     private final WebhookConfiguration webhookConfiguration;
+    private final JobConfiguration jobConfiguration;
 
-    @Bean(name = "webhookAsyncExecutor")
-    public Executor getWebhookAsyncExecutor() {
+    @Bean
+    public Executor webhookAsyncExecutor() {
 
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(webhookConfiguration.getCorePoolSize());
         executor.setMaxPoolSize(webhookConfiguration.getMaxPoolSize());
+        executor.setThreadNamePrefix("WebhookExecutor-");
         executor.initialize();
 
-        log.info("Initialized WebhookAsyncExecutor, corePoolSize: {}, maxPoolSize: {}",
+        log.info("Initialized webhookAsyncExecutor, corePoolSize: {}, maxPoolSize: {}",
                 webhookConfiguration.getCorePoolSize(), webhookConfiguration.getMaxPoolSize());
+        return executor;
+    }
+
+    @Bean
+    public Executor jobAsyncExecutor() {
+
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(jobConfiguration.getCorePoolSize());
+        executor.setMaxPoolSize(jobConfiguration.getMaxPoolSize());
+        executor.setThreadNamePrefix("JobExecutor-");
+        executor.initialize();
+
+        log.info("Initialized jobAsyncExecutor, corePoolSize: {}, maxPoolSize: {}",
+                jobConfiguration.getCorePoolSize(), jobConfiguration.getMaxPoolSize());
         return executor;
     }
 }

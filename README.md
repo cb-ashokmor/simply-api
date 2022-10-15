@@ -1,7 +1,7 @@
 ### Features
  - Apis for webhook verification
    - Api to process the webhook asynchronously
-   - Api to verify webhook with tweak to fail the processing at controller level or processing payload level
+   - Api to verify webhook with tweak to fail the processing at controller level or processing webhookPayload level
    - Api to intentionally delay the webhook processing
  - Cucumber tests
  - K6 performance verification test
@@ -29,7 +29,7 @@
      Payload : { 
                      //json object
                }
-     webhook get payload back, for id use id property specified in payload during post request
+     webhook get webhookPayload back, for id use id property specified in webhookPayload during post request
      Url : GET {{host}}/api/webhook/<id>
      ```
    - Secured webhook
@@ -40,7 +40,7 @@
      Payload : { 
                     //json object
               }
-     webhook get payload back, for id use id property specified in payload during post request
+     webhook get webhookPayload back, for id use id property specified in webhookPayload during post request
      Url : GET {{host}}/api/secured/webhook/<id>
      Header : Authorization Basic (user:password)
      ```
