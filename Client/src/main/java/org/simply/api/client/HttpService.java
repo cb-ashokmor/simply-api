@@ -1,6 +1,5 @@
 package org.simply.api.client;
 
-import lombok.Getter;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -8,7 +7,6 @@ import java.util.Base64;
 
 import static java.util.Objects.nonNull;
 
-@Getter
 public class HttpService {
     private final RestTemplate restTemplate = new RestTemplate();
     private final String host;
