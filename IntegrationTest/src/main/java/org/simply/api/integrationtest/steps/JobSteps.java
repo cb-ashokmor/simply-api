@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 @Slf4j
 public class JobSteps extends BaseSteps {
 
-    @When("^the user submit the job as per (.+) payload, async (.+) and (\\d+) requests$")
+    @When("^submit the job as per (.+) payload, async (.+) and (\\d+) requests$")
     public void call_job(String payloadFilename, boolean async, int requests) throws Exception {
         String fileContent = getFileContent(payloadFilename);
 
@@ -29,7 +29,7 @@ public class JobSteps extends BaseSteps {
         context().set("syncJobResponse", output.getBody());
     }
 
-    @Then("^the user verify job made (\\d+) webhook calls and min (.+) and max (.+) seconds to process$")
+    @Then("^verify job made (\\d+) webhook calls and min (.+) and max (.+) seconds to process$")
     public void verify_successful_sync_job(int jobTotal, float min, float max) {
         log.debug("Verify job webhook call matches, jobTotal: {}, min: {}, max: {}", jobTotal, min, max);
 

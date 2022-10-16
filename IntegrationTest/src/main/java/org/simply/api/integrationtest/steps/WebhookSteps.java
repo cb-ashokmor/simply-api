@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 @Slf4j
 public class WebhookSteps extends BaseSteps {
 
-    @When("^the user reset the webhook stats$")
+    @When("^reset the webhook stats$")
     public void call_reset_api() {
         log.debug("Calling api reset webhook stats");
 
@@ -22,7 +22,7 @@ public class WebhookSteps extends BaseSteps {
         post(endpoint, null, Reset.class);
     }
 
-    @When("^the user set the configuration as per (.+) payload to webhook$")
+    @When("^set the configuration as per (.+) payload to webhook$")
     public void call_config_api(String payloadFilename) throws Exception {
         String fileContent = getFileContent(payloadFilename);
 
@@ -37,7 +37,7 @@ public class WebhookSteps extends BaseSteps {
         context().set("webhookConfigStatus", output.getStatusCode());
     }
 
-    @When("^the user set the configuration as per (.+) payload, controller delay (\\d+) and processor delay (\\d+) to webhook$")
+    @When("^set the configuration as per (.+) payload, controller delay (\\d+) and processor delay (\\d+) to webhook$")
     public void call_parameterized_config_api(String payloadFilename, int controllerDelay, int processorDelay) throws Exception {
         String fileContent = getFileContent(payloadFilename);
 
@@ -54,7 +54,7 @@ public class WebhookSteps extends BaseSteps {
         context().set("webhookConfigStatus", output.getStatusCode());
     }
 
-    @Then("^the user verify status code of (\\d+) for webhook$")
+    @Then("^verify status code of (\\d+) for webhook$")
     public void verify_status_code(int statusCode) {
         log.debug("verify status code matches {}", statusCode);
 
@@ -63,7 +63,7 @@ public class WebhookSteps extends BaseSteps {
         Assertions.assertEquals(statusCode, httpStatus.value());
     }
 
-    @And("^the user get configuration as per (.+) json for webhook$")
+    @And("^get configuration as per (.+) json for webhook$")
     public void get_configuration(String jsonFilename) throws Exception {
         log.debug("Calling api to get config of webhook.");
 

@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 @Slf4j
 public class SecuredWebhookSteps extends BaseSteps {
 
-    @When("^the user reset the secured webhook stats$")
+    @When("^reset the secured webhook stats$")
     public void call_reset_api() {
         log.debug("Calling api reset secured webhook stats");
 
@@ -22,7 +22,7 @@ public class SecuredWebhookSteps extends BaseSteps {
         post(endpoint, null, Reset.class);
     }
 
-    @When("^the user set the configuration as per (.+) payload to secured webhook$")
+    @When("^set the configuration as per (.+) payload to secured webhook$")
     public void call_config_api(String payloadFilename) throws Exception {
 
         String fileContent = getFileContent(payloadFilename);
@@ -38,7 +38,7 @@ public class SecuredWebhookSteps extends BaseSteps {
         context().set("webhookConfigStatus", output.getStatusCode());
     }
 
-    @Then("^the user verify status code of (\\d+) for secured webhook$")
+    @Then("^verify status code of (\\d+) for secured webhook$")
     public void verify_status_code(int statusCode) {
         log.debug("verify status code matches {}", statusCode);
 
@@ -47,7 +47,7 @@ public class SecuredWebhookSteps extends BaseSteps {
         Assertions.assertEquals(statusCode, httpStatus.value());
     }
 
-    @And("^the user get configuration as per (.+) json for secured webhook$")
+    @And("^get configuration as per (.+) json for secured webhook$")
     public void get_configuration(String jsonFilename) throws Exception {
         log.debug("Calling api to get config of secured webhook.");
 
