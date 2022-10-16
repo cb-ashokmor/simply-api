@@ -12,13 +12,15 @@ import org.springframework.http.ResponseEntity;
 @Slf4j
 public class JobSteps extends BaseSteps {
 
-    @When("^the user submit the job as per (.+) payload$")
-    public void call_job(String payloadFilename) throws Exception {
+    @When("^the user submit the job as per (.+) payload, async (.+) and (\\d+) requests$")
+    public void call_job(String payloadFilename, boolean async, int requests) throws Exception {
         String fileContent = getFileContent(payloadFilename);
 
-        log.debug("Calling api execute job, payload {}", fileContent);
+        log.debug("Calling api execute job, payload {}, async: {}, requests: {}", fileContent, async, requests);
 
         JobPayload payload = objectMapper.readValue(fileContent, JobPayload.class);
+        payload.setAsync(async);
+        payload.setRequests(requests);
 
         String endpoint = "/api/jobs";
 
@@ -27,15 +29,20 @@ public class JobSteps extends BaseSteps {
         context().set("syncJobResponse", output.getBody());
     }
 
-
-    @Then("^the user verify job made (\\d+) webhook calls$")
-    public void verify_successful_sync_job(int jobTotal) {
-        log.debug("verify job webhook call matches - {}", jobTotal);
+    @Then("^the user verify job made (\\d+) webhook calls and min (.+) and max (.+) seconds to process$")
+    public void verify_successful_sync_job(int jobTotal, float min, float max) {
+        log.debug("Verify job webhook call matches, jobTotal: {}, min: {}, max: {}", jobTotal, min, max);
 
         String endpoint = "/api/webhooks/duration";
 
         ResponseEntity<WebhookResponse> output = get(endpoint, WebhookResponse.class);
 
         Assertions.assertEquals(jobTotal, output.getBody().getCount());
+
+        String message = "Controller processing time " + output.getBody().getControllerTime() + " should at greater than " + min + " seconds";
+        Assertions.assertTrue(output.getBody().getControllerTime() >= min, message);
+
+        message = "Controller processing time " + output.getBody().getControllerTime() + " should not greater than " + max + " seconds";
+        Assertions.assertTrue(output.getBody().getControllerTime() <= max, message);
     }
 }

@@ -13,8 +13,8 @@ import encoding from 'k6/encoding';
 export const requests = new Counter('http_reqs');
 
 export const options = {
-    vus: 5, //increase this to give load
-    iterations: 5 //increase this to give load
+    vus: 5, //number of concurrent users
+    iterations: 5 //total number of calls
 };
 
 let parameters = null;
@@ -46,7 +46,7 @@ export default function () {
 
     const res = http.post(url, data, parameters);
 
-    const checkRes = check(res, {
+    check(res, {
         'Http request status 200': (r) => r.status >= 200 && r.status <= 299,
     });
 

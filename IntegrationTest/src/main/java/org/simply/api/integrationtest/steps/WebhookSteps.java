@@ -37,6 +37,23 @@ public class WebhookSteps extends BaseSteps {
         context().set("webhookConfigStatus", output.getStatusCode());
     }
 
+    @When("^the user set the configuration as per (.+) payload, controller delay (\\d+) and processor delay (\\d+) to webhook$")
+    public void call_parameterized_config_api(String payloadFilename, int controllerDelay, int processorDelay) throws Exception {
+        String fileContent = getFileContent(payloadFilename);
+
+        log.debug("Calling api to update webhook config, payload {}, controllerDelay: {}, processorDelay: {}", fileContent, controllerDelay, processorDelay);
+
+        Config config = objectMapper.readValue(fileContent, Config.class);
+        config.setControllerDelay(controllerDelay);
+        config.setProcessorDelay(processorDelay);
+
+        String endpoint = "/api/webhooks/config";
+
+        ResponseEntity<Config> output = post(endpoint, config, Config.class);
+
+        context().set("webhookConfigStatus", output.getStatusCode());
+    }
+
     @Then("^the user verify status code of (\\d+) for webhook$")
     public void verify_status_code(int statusCode) {
         log.debug("verify status code matches {}", statusCode);
