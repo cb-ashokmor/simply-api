@@ -16,7 +16,7 @@ public class JobSteps extends BaseSteps {
     public void call_job(String payloadFilename, boolean async, int requests) throws Exception {
         String fileContent = getFileContent(payloadFilename);
 
-        log.debug("Calling api execute job, payload {}, async: {}, requests: {}", fileContent, async, requests);
+        log.debug("Calling api execute job, payloadFilename {}, async: {}, requests: {}", payloadFilename, async, requests);
 
         JobPayload payload = objectMapper.readValue(fileContent, JobPayload.class);
         payload.setAsync(async);
